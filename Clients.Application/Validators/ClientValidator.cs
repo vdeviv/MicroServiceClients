@@ -1,7 +1,6 @@
-﻿
-using FluentResults;
+﻿using FluentResults;
 using Clients.Domain.Entities;
-using Clients.Domain.Interfaces; 
+using Clients.Domain.Interfaces;
 using System.Text.RegularExpressions;
 
 namespace Clients.Application.Validators
@@ -21,37 +20,72 @@ namespace Clients.Application.Validators
         {
             var r = Result.Ok();
 
+            // =========================
+            // NOMBRE
+            // =========================
             if (string.IsNullOrWhiteSpace(c.first_name))
-                r = r.WithError(new Error("El nombre es obligatorio.").WithMetadata("FieldName", "first_name"));
+            {
+                r = r.WithFieldError("first_name", "El nombre es obligatorio.");
+            }
             else
             {
                 var v = c.first_name.Trim();
-                if (v.Length is < 2 or > 50) r = r.WithError(new Error("Debe tener entre 2 y 50 caracteres.").WithMetadata("FieldName", "first_name"));
-                if (!LettersAndSpaces.IsMatch(v)) r = r.WithError(new Error("El nombre solo debe tener letras y espacios.").WithMetadata("FieldName", "first_name"));
+
+                if (v.Length is < 2 or > 50)
+                    r = r.WithFieldError("first_name", "El nombre debe tener entre 2 y 50 caracteres.");
+
+                if (!LettersAndSpaces.IsMatch(v))
+                    r = r.WithFieldError("first_name", "El nombre solo debe tener letras y espacios.");
             }
 
+            // =========================
+            // APELLIDO
+            // =========================
             if (string.IsNullOrWhiteSpace(c.last_name))
-                r = r.WithError(new Error("El apellido es obligatorio.").WithMetadata("FieldName", "last_name"));
+            {
+                r = r.WithFieldError("last_name", "El apellido es obligatorio.");
+            }
             else
             {
                 var v = c.last_name.Trim();
-                if (v.Length is < 2 or > 50) r = r.WithError(new Error("Debe tener entre 2 y 50 caracteres.").WithMetadata("FieldName", "last_name"));
-                if (!LettersAndSpaces.IsMatch(v)) r = r.WithError(new Error("El apellido solo debe letras y espacios.").WithMetadata("FieldName", "last_name"));
+
+                if (v.Length is < 2 or > 50)
+                    r = r.WithFieldError("last_name", "El apellido debe tener entre 2 y 50 caracteres.");
+
+                if (!LettersAndSpaces.IsMatch(v))
+                    r = r.WithFieldError("last_name", "El apellido solo debe contener letras y espacios.");
             }
 
+            // =========================
+            // EMAIL (opcional)
+            // =========================
             if (!string.IsNullOrWhiteSpace(c.email))
             {
                 var mail = c.email.Trim();
-                if (mail.Length > 100) r = r.WithError(new Error("No debe exceder 100 caracteres.").WithMetadata("FieldName", "email"));
-                if (!Email.IsMatch(mail)) r = r.WithError(new Error("Formato de correo inválido.").WithMetadata("FieldName", "email"));
+
+                if (mail.Length > 100)
+                    r = r.WithFieldError("email", "El correo no debe exceder 100 caracteres.");
+
+                if (!Email.IsMatch(mail))
+                    r = r.WithFieldError("email", "El correo no tiene un formato válido.");
             }
 
+            // =========================
+            // NIT
+            // =========================
             if (string.IsNullOrWhiteSpace(c.nit))
-                r = r.WithError(new Error("El NIT es obligatorio.").WithMetadata("FieldName", "nit"));
+            {
+                r = r.WithFieldError("nit", "El NIT es obligatorio.");
+            }
             else
             {
                 var v = c.nit.Trim();
-                if (!Nit.IsMatch(v)) r = r.WithError(new Error("El NIT debe tener 7–12 dígitos sin letras ni caracteres especiales.").WithMetadata("FieldName", "nit"));
+
+                if (!Nit.IsMatch(v))
+                    r = r.WithFieldError(
+                        "nit",
+                        "El NIT debe tener 7–12 dígitos, sin letras ni caracteres especiales (opcionalmente con guion y dígito verificador)."
+                    );
             }
 
             return r;

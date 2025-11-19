@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Application\\Clients.Application.csproj": {}
+    "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Application\\Clients.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Application\\Clients.Application.csproj": {
+    "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Application\\Clients.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Application\\Clients.Application.csproj",
+        "projectUniqueName": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Application\\Clients.Application.csproj",
         "projectName": "Clients.Application",
-        "projectPath": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Application\\Clients.Application.csproj",
-        "packagesPath": "C:\\Users\\Vivi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Application\\obj\\",
+        "projectPath": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Application\\Clients.Application.csproj",
+        "packagesPath": "C:\\Users\\PABLO\\.nuget\\packages\\",
+        "outputPath": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Vivi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PABLO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,15 +26,14 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Domain\\Clients.Domain.csproj": {
-                "projectPath": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Domain\\Clients.Domain.csproj"
+              "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Domain\\Clients.Domain.csproj": {
+                "projectPath": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Domain\\Clients.Domain.csproj"
               }
             }
           }
@@ -84,20 +83,20 @@
         }
       }
     },
-    "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Domain\\Clients.Domain.csproj": {
+    "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Domain\\Clients.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Domain\\Clients.Domain.csproj",
+        "projectUniqueName": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Domain\\Clients.Domain.csproj",
         "projectName": "Clients.Domain",
-        "projectPath": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Domain\\Clients.Domain.csproj",
-        "packagesPath": "C:\\Users\\Vivi\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vivi\\source\\repos\\ClientsMicroService\\Clients.Domain\\obj\\",
+        "projectPath": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Domain\\Clients.Domain.csproj",
+        "packagesPath": "C:\\Users\\PABLO\\.nuget\\packages\\",
+        "outputPath": "D:\\Universidad\\8vo_semestre_II2025\\ARQ_SOFTWARE\\MicroServiceClients\\Clients.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Vivi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\PABLO\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -106,7 +105,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

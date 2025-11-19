@@ -1,20 +1,16 @@
-﻿
-using Clients.Application.Interfaces;
+﻿using Clients.Application.Interfaces;
+using Clients.Application.Validators;  
 using Clients.Domain.Entities;
-using Clients.Domain.Interfaces; 
+using Clients.Domain.Interfaces;
 using FluentResults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Clients.Application.Services
 {
     public class ClientService : IClientService
     {
         private readonly IRepository<Client> _clientRepository;
-        private readonly IValidator<Client> _validator; 
+        private readonly IValidator<Client> _validator;
 
         public ClientService(IRepository<Client> clientRepository, IValidator<Client> validator)
         {
@@ -32,7 +28,8 @@ namespace Clients.Application.Services
 
         public async Task<Client> RegisterAsync(Client entity, int actorId)
         {
-            if (entity is null) throw new ArgumentNullException(nameof(entity));
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity));
 
             entity.first_name = NormalizeName(entity.first_name);
             entity.last_name = NormalizeName(entity.last_name);
@@ -41,18 +38,26 @@ namespace Clients.Application.Services
 
             var validationResult = _validator.Validate(entity);
             if (validationResult.IsFailed)
-                throw new ValidationException(ToDictionary(validationResult));
+                throw new ValidationException(
+                    "Validación de dominio falló para Cliente.",
+                    validationResult.Errors.ToDictionary()
+                );
 
             var all = await _clientRepository.GetAll();
+
             if (!string.IsNullOrWhiteSpace(entity.email) &&
                 all.Any(c => !c.is_deleted &&
-                             string.Equals((c.email ?? string.Empty).Trim(), entity.email, StringComparison.OrdinalIgnoreCase)))
+                    string.Equals((c.email ?? "").Trim(), entity.email, StringComparison.OrdinalIgnoreCase)))
+            {
                 throw new DomainException("El correo ya existe.");
+            }
 
             if (!string.IsNullOrWhiteSpace(entity.nit) &&
                 all.Any(c => !c.is_deleted &&
-                             string.Equals((c.nit ?? string.Empty).Trim(), entity.nit, StringComparison.OrdinalIgnoreCase)))
+                    string.Equals((c.nit ?? "").Trim(), entity.nit, StringComparison.OrdinalIgnoreCase)))
+            {
                 throw new DomainException("El NIT ya existe.");
+            }
 
             entity.created_by = actorId;
             entity.created_at = DateTime.Now;
@@ -69,10 +74,10 @@ namespace Clients.Application.Services
         {
             return await _clientRepository.GetAll();
         }
-
         public async Task UpdateAsync(Client entity, int actorId)
         {
-            if (entity is null) throw new ArgumentNullException(nameof(entity));
+            if (entity is null)
+                throw new ArgumentNullException(nameof(entity));
 
             var current = await _clientRepository.GetById(new Client { id = entity.id })
                           ?? throw new NotFoundException($"Cliente con ID {entity.id} no encontrado.");
@@ -84,17 +89,21 @@ namespace Clients.Application.Services
 
             var validationResult = _validator.Validate(current);
             if (validationResult.IsFailed)
-                throw new ValidationException(ToDictionary(validationResult));
+                throw new ValidationException(
+                    "Validación de dominio falló para Cliente.",
+                    validationResult.Errors.ToDictionary()
+                );
 
             var all = await _clientRepository.GetAll();
+
             if (!string.IsNullOrWhiteSpace(current.email) &&
                 all.Any(c => c.id != current.id && !c.is_deleted &&
-                             string.Equals((c.email ?? string.Empty).Trim(), current.email, StringComparison.OrdinalIgnoreCase)))
+                             string.Equals((c.email ?? "").Trim(), current.email, StringComparison.OrdinalIgnoreCase)))
                 throw new DomainException("El correo ya existe.");
 
             if (!string.IsNullOrWhiteSpace(current.nit) &&
                 all.Any(c => c.id != current.id && !c.is_deleted &&
-                             string.Equals((c.nit ?? string.Empty).Trim(), current.nit, StringComparison.OrdinalIgnoreCase)))
+                             string.Equals((c.nit ?? "").Trim(), current.nit, StringComparison.OrdinalIgnoreCase)))
                 throw new DomainException("El NIT ya existe.");
 
             current.updated_by = actorId;
@@ -102,7 +111,6 @@ namespace Clients.Application.Services
 
             await _clientRepository.Update(current);
         }
-
         public async Task SoftDeleteAsync(int id, int actorId)
         {
             var current = await _clientRepository.GetById(new Client { id = id })
@@ -114,22 +122,19 @@ namespace Clients.Application.Services
 
             await _clientRepository.Delete(current);
         }
-
-        private static Dictionary<string, string> ToDictionary(Result r)
-        {
-            return r.Errors
-                .SelectMany(e => e.Metadata.Where(m => m.Key == "FieldName").Select(m => new { Field = (string)m.Value!, Message = e.Message }))
-                .GroupBy(x => x.Field)
-                .ToDictionary(g => g.Key, g => string.Join(", ", g.Select(x => x.Message)));
-        }
     }
-
     public class DomainException : Exception { public DomainException(string m) : base(m) { } }
+
     public class NotFoundException : Exception { public NotFoundException(string m) : base(m) { } }
+
     public class ValidationException : Exception
     {
         public Dictionary<string, string> Errors { get; }
-        public ValidationException(Dictionary<string, string> errors) : base("Validación de dominio falló.")
-            => Errors = errors;
+
+        public ValidationException(string message, Dictionary<string, string> errors)
+            : base(message)
+        {
+            Errors = errors;
+        }
     }
 }
