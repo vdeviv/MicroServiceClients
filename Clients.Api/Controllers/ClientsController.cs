@@ -1,5 +1,4 @@
-﻿
-using Clients.Application.Interfaces;
+﻿using Clients.Application.Interfaces;
 using Clients.Application.Services;
 using Clients.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +11,14 @@ namespace Clients.Api.Controllers
     public class ClientsController : ControllerBase
     {
         private readonly IClientService _clientService;
-        private const int ActorId = 1; 
+        private const int ActorId = 1; // de momento fijo
 
         public ClientsController(IClientService clientService)
         {
             _clientService = clientService;
         }
 
+        // POST api/clients
         [HttpPost]
         [ProducesResponseType(typeof(Client), (int)HttpStatusCode.Created)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -31,7 +31,12 @@ namespace Clients.Api.Controllers
             }
             catch (ValidationException ex)
             {
-                return BadRequest(new { errors = ex.Errors });
+                // ⬅ Igual que en UserController: message + errors
+                return BadRequest(new
+                {
+                    message = ex.Message,
+                    errors = ex.Errors
+                });
             }
             catch (DomainException ex)
             {
@@ -39,6 +44,7 @@ namespace Clients.Api.Controllers
             }
         }
 
+        // PUT api/clients/{id}
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -53,7 +59,11 @@ namespace Clients.Api.Controllers
             }
             catch (ValidationException ex)
             {
-                return BadRequest(new { errors = ex.Errors });
+                return BadRequest(new
+                {
+                    message = ex.Message,
+                    errors = ex.Errors
+                });
             }
             catch (DomainException ex)
             {
@@ -65,6 +75,7 @@ namespace Clients.Api.Controllers
             }
         }
 
+        // GET api/clients
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<Client>), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetAll()
@@ -73,6 +84,7 @@ namespace Clients.Api.Controllers
             return Ok(clients);
         }
 
+        // GET api/clients/{id}
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(Client), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
@@ -81,11 +93,14 @@ namespace Clients.Api.Controllers
             var client = await _clientService.GetByIdAsync(id);
             if (client == null)
             {
-                return NotFound($"Cliente con ID {id} no encontrado.");
+                // para ser consistente, devuelvo JSON
+                return NotFound(new { error = $"Cliente con ID {id} no encontrado." });
             }
+
             return Ok(client);
         }
 
+        // DELETE api/clients/{id}
         [HttpDelete("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
