@@ -1,5 +1,5 @@
 ﻿using Clients.Application.Interfaces;
-using Clients.Application.Validators;  
+using Clients.Application.Validators;
 using Clients.Domain.Entities;
 using Clients.Domain.Interfaces;
 using FluentResults;
@@ -59,8 +59,13 @@ namespace Clients.Application.Services
                 throw new DomainException("El NIT ya existe.");
             }
 
+            var now = DateTime.Now;
+
+            entity.is_deleted = false;
             entity.created_by = actorId;
-            entity.created_at = DateTime.Now;
+            entity.created_at = now;
+            entity.updated_by = actorId;
+            entity.updated_at = now;
 
             return await _clientRepository.Create(entity);
         }
@@ -74,6 +79,7 @@ namespace Clients.Application.Services
         {
             return await _clientRepository.GetAll();
         }
+
         public async Task UpdateAsync(Client entity, int actorId)
         {
             if (entity is null)
@@ -111,6 +117,7 @@ namespace Clients.Application.Services
 
             await _clientRepository.Update(current);
         }
+
         public async Task SoftDeleteAsync(int id, int actorId)
         {
             var current = await _clientRepository.GetById(new Client { id = id })
@@ -123,6 +130,7 @@ namespace Clients.Application.Services
             await _clientRepository.Delete(current);
         }
     }
+
     public class DomainException : Exception { public DomainException(string m) : base(m) { } }
 
     public class NotFoundException : Exception { public NotFoundException(string m) : base(m) { } }
